@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import EarthquakeMap from './EarthquakeMap';
 
 const API_URL = 'http://localhost:8080/api/earthquakes';
 
@@ -60,15 +61,15 @@ function EarthquakeTable() {
                     className="btn btn-secondary mb-2"
                     onClick={fetchAndStore}
                     disabled={loading}
-                    >
-                        {loading ? (
-                            <>
-                                <span className="spinner-border spinner-border-sm me-2"/>
-                                Fetching...
-                            </>
-                        ) : (
-                            'Fetch Latest Earthquakes'
-                        )}
+                >
+                    {loading ? (
+                        <>
+                            <span className="spinner-border spinner-border-sm me-2"/>
+                            Fetching...
+                        </>
+                    ) : (
+                        'Fetch Latest Earthquakes'
+                    )}
                 </button>
                 <span className="text-muted mt-4">
                     {earthquakes.length} earthquakes found
@@ -122,6 +123,8 @@ function EarthquakeTable() {
                     </table>
                 </div>
             )}
+            <hr style={{border: '1px solid', margin: '50px auto', width: '80%'}}/>
+            <EarthquakeMap earthquakes={earthquakes}/>
         </div>
     );
 }

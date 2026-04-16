@@ -46,6 +46,14 @@ public class EarthquakeService {
                     earthquake.setPlace(p.getPlace());
                     earthquake.setTitle(p.getTitle());
                     earthquake.setTimeOfEvent(Instant.ofEpochMilli(p.getTime()));
+
+                    if (f.getGeometry() != null && f.getGeometry().getCoordinates() != null && f.getGeometry().getCoordinates().size() >= 2) {
+                        earthquake.setLongitude(f.getGeometry().getCoordinates().get(0));
+                        earthquake.setLatitude(f.getGeometry().getCoordinates().get(1));
+                        if (f.getGeometry().getCoordinates().size() >= 3) {
+                            earthquake.setDepth(f.getGeometry().getCoordinates().get(2));
+                        }
+                    }
                     return earthquake;
                 })
                 .collect(Collectors.toList());

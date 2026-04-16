@@ -14,6 +14,7 @@ public class EarthquakeDto {
     public static class Feature{
         private String type;
         private Properties properties;
+        private Geometry geometry;
     }
 
     @Data
@@ -23,5 +24,10 @@ public class EarthquakeDto {
         private String place;
         private String title;
         private Long time;
+    }
+    @Data
+    public static class Geometry {
+        private String type;
+        private List<Double> coordinates;
     }
 }
