@@ -8,6 +8,7 @@ function EarthquakeTable() {
     const [earthquakes, setEarthquakes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [filterTime, setFilterTime] = useState('');
 
     const fetchEarthquakes = async () => {
         try {
@@ -44,6 +45,20 @@ function EarthquakeTable() {
         }
     };
 
+    const filterByTime = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const isoTime = new Date(filterTime).toISOString();
+            const response = await axios.get(`${API_URL}/filter?after=${isoTime}`);
+            setEarthquakes(response.data);
+        } catch (err) {
+            setError('Failed to filter earthquakes.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         fetchEarthquakes();
     }, []);
@@ -76,6 +91,35 @@ function EarthquakeTable() {
                 </span>
             </div>
 
+            <div className="d-flex justify-content-end gap-2 mb-3 mx-auto" style={{maxWidth: '80%'}}>
+                <input
+                    type="datetime-local"
+                    className="form-control w-auto"
+                    value={filterTime}
+                    onChange={(e) => setFilterTime(e.target.value)}
+                />
+                <button
+                    className="btn btn-outline-primary"
+                    onClick={filterByTime}
+                    disabled={!filterTime || loading}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         className="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+                <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => {
+                        setFilterTime('');
+                        fetchEarthquakes();
+                    }}
+                >
+                    Clear
+                </button>
+            </div>
+
             {error && (
                 <div className="alert alert-danger">{error}</div>
             )}
@@ -101,9 +145,9 @@ function EarthquakeTable() {
                         {earthquakes.map(eq => (
                             <tr key={eq.id}>
                                 <td>
-                    <span className={`badge bg-${getMagnitudeColor(eq.magnitude)}`}>
-                      {eq.magnitude}
-                    </span>
+                                    <span className={`badge bg-${getMagnitudeColor(eq.magnitude)}`}>
+                                        {eq.magnitude}
+                                    </span>
                                 </td>
                                 <td>{eq.magType}</td>
                                 <td>{eq.place}</td>

@@ -25,14 +25,14 @@ function EarthquakeMap({ earthquakes }) {
         <div className="mt-4 mb-5">
             <h4 className="text-center mt-5 mb-3"> 📍 Earthquake Map</h4>
             <MapContainer
-                center={[40, 0]}
+                center={[45, 0]}
                 zoom={2}
                 minZoom={2}
-                maxBounds={[[-90, -180], [90, 180]]}
+                maxBounds={[[-90, -200], [90, 200]]}
                 maxBoundsViscosity={1.0}
                 style={{
-                    height: '400px',
-                    width: '80%',
+                    height: '600px',
+                    width: '70%',
                     margin: '0 auto',
                     borderRadius: '12px',
                     border: '1px solid #dee2e6',
