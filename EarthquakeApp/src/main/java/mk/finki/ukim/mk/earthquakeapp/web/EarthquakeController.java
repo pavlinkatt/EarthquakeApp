@@ -5,6 +5,7 @@ import mk.finki.ukim.mk.earthquakeapp.service.EarthquakeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -28,4 +29,11 @@ public class EarthquakeController {
         List<Earthquake> earthquakes = earthquakeService.getAllEarthquakes();
         return ResponseEntity.ok(earthquakes);
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Earthquake>> getAfterTime(@RequestParam String after) {
+        Instant time = Instant.parse(after);
+        return ResponseEntity.ok(earthquakeService.getEarthquakesAfter(time));
+    }
+
 }

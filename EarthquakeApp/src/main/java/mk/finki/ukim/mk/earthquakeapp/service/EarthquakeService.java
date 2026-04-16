@@ -55,4 +55,8 @@ public class EarthquakeService {
     public List<Earthquake> getAllEarthquakes() {
         return earthquakeRepository.findAll();
     }
+
+    public List<Earthquake> getEarthquakesAfter(Instant time) {
+        return earthquakeRepository.findByTimeOfEventAfter(time);
+    }
 }
