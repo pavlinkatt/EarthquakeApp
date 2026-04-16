@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/earthquakes")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EarthquakeController {
 
     private final EarthquakeService earthquakeService;
