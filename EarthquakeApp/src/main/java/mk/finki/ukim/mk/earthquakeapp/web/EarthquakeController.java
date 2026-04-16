@@ -36,4 +36,10 @@ public class EarthquakeController {
         return ResponseEntity.ok(earthquakeService.getEarthquakesAfter(time));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        earthquakeService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

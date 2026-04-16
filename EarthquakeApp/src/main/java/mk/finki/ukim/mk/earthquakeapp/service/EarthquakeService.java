@@ -2,6 +2,8 @@ package mk.finki.ukim.mk.earthquakeapp.service;
 
 import jakarta.transaction.Transactional;
 import mk.finki.ukim.mk.earthquakeapp.dto.EarthquakeDto;
+import mk.finki.ukim.mk.earthquakeapp.exceptions.EarthquakeNotFoundException;
+import mk.finki.ukim.mk.earthquakeapp.exceptions.UsgsApiException;
 import mk.finki.ukim.mk.earthquakeapp.model.Earthquake;
 import mk.finki.ukim.mk.earthquakeapp.repository.EarthquakeRepository;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class EarthquakeService {
         EarthquakeDto response = restTemplate.getForObject(USGS_API, EarthquakeDto.class);
 
         if(response == null || response.getFeatures() == null){
-            throw new RuntimeException("Failed to fetch data from USGS API");
+            throw new UsgsApiException("Failed to fetch data from USGS API");
         }
 
         List<Earthquake> earthquakes = response.getFeatures().stream()
@@ -59,4 +61,12 @@ public class EarthquakeService {
     public List<Earthquake> getEarthquakesAfter(Instant time) {
         return earthquakeRepository.findByTimeOfEventAfter(time);
     }
+
+    public void deleteById(Long id) {
+        if (!earthquakeRepository.existsById(id)) {
+            throw new EarthquakeNotFoundException(id);
+        }
+        earthquakeRepository.deleteById(id);
+    }
+
 }
